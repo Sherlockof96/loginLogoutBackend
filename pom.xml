@@ -5,14 +5,14 @@
 	<parent>
 		<groupId>org.springframework.boot</groupId>
 		<artifactId>spring-boot-starter-parent</artifactId>
-		<version>3.2.0-SNAPSHOT</version>
+		<version>3.2.0-RC1</version>
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
-	<groupId>com.example</groupId>
-	<artifactId>loginlogoutbackend</artifactId>
+	<groupId>com.auth</groupId>
+	<artifactId>kavish</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<name>loginlogoutbackend</name>
-	<description>Demo project for Spring Boot</description>
+	<name>kavish</name>
+	<description>Project for auth</description>
 	<properties>
 		<java.version>17</java.version>
 	</properties>
@@ -22,6 +22,12 @@
 			<artifactId>spring-boot-starter-web</artifactId>
 		</dependency>
 
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-devtools</artifactId>
+			<scope>runtime</scope>
+			<optional>true</optional>
+		</dependency>
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-test</artifactId>
@@ -46,14 +52,6 @@
 				<enabled>false</enabled>
 			</snapshots>
 		</repository>
-		<repository>
-			<id>spring-snapshots</id>
-			<name>Spring Snapshots</name>
-			<url>https://repo.spring.io/snapshot</url>
-			<releases>
-				<enabled>false</enabled>
-			</releases>
-		</repository>
 	</repositories>
 	<pluginRepositories>
 		<pluginRepository>
@@ -63,14 +61,6 @@
 			<snapshots>
 				<enabled>false</enabled>
 			</snapshots>
-		</pluginRepository>
-		<pluginRepository>
-			<id>spring-snapshots</id>
-			<name>Spring Snapshots</name>
-			<url>https://repo.spring.io/snapshot</url>
-			<releases>
-				<enabled>false</enabled>
-			</releases>
 		</pluginRepository>
 	</pluginRepositories>
 

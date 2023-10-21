@@ -1,10 +1,10 @@
-package com.example.loginlogoutbackend;
+package com.auth.kavish;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
 @SpringBootTest
-class LoginlogoutbackendApplicationTests {
+class KavishApplicationTests {
 
 	@Test
 	void contextLoads() {
