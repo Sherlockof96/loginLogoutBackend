@@ -12,5 +12,10 @@ public class signup {
     public Boolean index(@PathVariable String username, @PathVariable String password, @PathVariable String email) {
         return true;
     }
+
+    @GetMapping("/")
+    public String index() {
+        return "Working";
+    }
     
 }
