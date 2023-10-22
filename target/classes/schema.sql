@@ -1,0 +1,2 @@
+DROP TABLE IF EXISTS profile;
+CREATE TABLE profile (id INT PRIMARY KEY, username VARCHAR(255), email VARCHAR(4096), password VARCHAR(4096));

@@ -1,4 +1,7 @@
 /Users/kavishdoshi/Desktop/loginLogoutBackend/src/main/java/com/auth/kavish/SQLDataBase.java
-/Users/kavishdoshi/Desktop/loginLogoutBackend/src/main/java/com/auth/kavish/Profile.java
-/Users/kavishdoshi/Desktop/loginLogoutBackend/src/main/java/com/auth/kavish/SignUpController.java
+/Users/kavishdoshi/Desktop/loginLogoutBackend/src/main/java/com/auth/kavish/service/SignUp.java
+/Users/kavishdoshi/Desktop/loginLogoutBackend/src/main/java/com/auth/kavish/repository/ProfileRepository.java
+/Users/kavishdoshi/Desktop/loginLogoutBackend/src/main/java/com/auth/kavish/controller/SignUpController.java
+/Users/kavishdoshi/Desktop/loginLogoutBackend/src/main/java/com/auth/kavish/service/impl/SignUpImpl.java
 /Users/kavishdoshi/Desktop/loginLogoutBackend/src/main/java/com/auth/kavish/KavishApplication.java
+/Users/kavishdoshi/Desktop/loginLogoutBackend/src/main/java/com/auth/kavish/model/Profile.java
