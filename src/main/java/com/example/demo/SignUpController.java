@@ -37,11 +37,16 @@ public class SignUpController {
     }
 
     @PostMapping("/login")
-    public Profile login(@RequestBody Profile user) {
+    public Integer login(@RequestBody Profile user) {
         // Handle signup logic here
+        Integer id = user.getId();
         try {
                 profileRepository.findAll().forEach(profile -> {
                     if(profile.getEmail().equals(user.getEmail()) && profile.getPass().equals(user.getPass()))
+                    {
+                        user.setId(profile.getId());
+                    } 
+                    else if (profile.getUsername().equals(user.getUsername()) && profile.getPass().equals(user.getPass()))
                     {
                         user.setId(profile.getId());
                     }
@@ -49,10 +54,14 @@ public class SignUpController {
 
         }catch (Exception e)
         {
-            return user;
+            return -1;
         }
         
-        return user;
+        if (user.getId() == id)
+        {
+            return -1;
+        }
+        return user.getId();
     }
 
     @PostMapping("/signup")
