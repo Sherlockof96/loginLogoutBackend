@@ -24,16 +24,35 @@ public class SignUpController {
     }
 
     @PostMapping("/modify")
-    public HttpStatus modify(@RequestBody Profile user) {
+    public HttpStatus modify(@RequestBody Profile changedProfile) {
         // Handle signup logic here
         try {
-                profileRepository.save(user);
+                profileRepository.save(changedProfile);
         }catch (Exception e)
         {
             return HttpStatus.BAD_REQUEST;
         }
         
         return HttpStatus.CREATED;
+    }
+
+    @PostMapping("/login")
+    public Profile login(@RequestBody Profile user) {
+        // Handle signup logic here
+        try {
+                profileRepository.findAll().forEach(profile -> {
+                    if(profile.getEmail().equals(user.getEmail()) && profile.getPass().equals(user.getPass()))
+                    {
+                        user.setId(profile.getId());
+                    }
+                });
+
+        }catch (Exception e)
+        {
+            return user;
+        }
+        
+        return user;
     }
 
     @PostMapping("/signup")
