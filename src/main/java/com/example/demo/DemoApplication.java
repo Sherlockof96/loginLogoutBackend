@@ -18,7 +18,9 @@ public class DemoApplication {
 		return new WebMvcConfigurer() {
 			@Override
 			public void addCorsMappings(CorsRegistry registry) {
-				registry.addMapping("/signup").allowedOrigins("https://login.kavishdoshi.com");
+				registry.addMapping("/**")
+						.allowedOrigins("https://login.kavishdoshi.com", "http://localhost:3000")
+						.allowedMethods("*");
 			}
 		};
 	}
