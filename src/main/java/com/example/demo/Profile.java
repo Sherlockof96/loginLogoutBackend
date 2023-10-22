@@ -5,17 +5,20 @@ import org.springframework.data.annotation.Id;
 
 
 public class Profile {
-
     @Id
     private Integer id;
+
     private String email;
+
     private String pass;
+
     private String username;
 
     public Profile() {
     }
 
-    public Profile(String email, String pass, String username) {
+    public Profile(Integer id, String email, String pass, String username) {
+        this.id = id;
         this.email = email;
         this.pass = pass;
         this.username = username;
