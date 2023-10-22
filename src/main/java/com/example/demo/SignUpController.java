@@ -37,8 +37,9 @@ public class SignUpController {
     }
 
     @PostMapping("/signup")
-    public HttpStatus signUp(@RequestBody Profile user) {
+    public int signUp(@RequestBody Profile user) {
         // Handle signup logic here
+        Long count = 0L;
         try
         {
             Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver");
@@ -46,11 +47,11 @@ public class SignUpController {
         catch (Exception e)
         {
             e.printStackTrace();
-            return HttpStatus.INTERNAL_SERVER_ERROR;
+            return count.intValue();
         }
         
         try {
-                Long count = profileRepository.count();
+                count = profileRepository.count();
 
                 Connection con = DriverManager.getConnection(url, "userData@userdataforloginlogout", "LoginLogout@1");
                 PreparedStatement ps = con.prepareStatement("INSERT INTO profile (id, username, email, pass) values (?,?,?,?)");
@@ -62,10 +63,10 @@ public class SignUpController {
                 ps.close();
         }catch (SQLException e)
         {
-            return HttpStatus.BAD_REQUEST;
+            return 0;
         }
         
-        return HttpStatus.CREATED;
+        return count.intValue() + 1;
     }
 
     @GetMapping("/get")
