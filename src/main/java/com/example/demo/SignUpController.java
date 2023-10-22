@@ -80,8 +80,8 @@ public class SignUpController {
                 Connection con = DriverManager.getConnection(url, "userData@userdataforloginlogout", "LoginLogout@1");
                 PreparedStatement ps = con.prepareStatement("INSERT INTO profile (id, username, email, pass) values (?,?,?,?)");
                 ps.setInt(1, count.intValue() + 1);
-                ps.setString(2, user.getEmail());
-                ps.setString(3, user.getUsername());
+                ps.setString(2, user.getUsername());
+                ps.setString(3, user.getEmail());
                 ps.setString(4, user.getPass());
                 ps.executeUpdate();
                 ps.close();
