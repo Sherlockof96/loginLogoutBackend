@@ -19,7 +19,7 @@ public class DemoApplication {
 			@Override
 			public void addCorsMappings(CorsRegistry registry) {
 				registry.addMapping("/**")
-						.allowedOrigins("https://login.kavishdoshi.com", "http://localhost:3000")
+						.allowedOrigins("https://login.kavishdoshi.com", "http://localhost:3000", "http://localhost:3002", "https://kavishdoshi.com")
 						.allowedMethods("*");
 			}
 		};
