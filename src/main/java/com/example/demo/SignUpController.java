@@ -38,11 +38,7 @@ public class SignUpController {
         Integer id = user.getId();
         try {
                 profileRepository.findAll().forEach(profile -> {
-                    if(profile.getEmail().equals(user.getEmail()) && profile.getPass().equals(user.getPass()))
-                    {
-                        user.setId(profile.getId());
-                    } 
-                    else if (profile.getUsername().equals(user.getUsername()) && profile.getPass().equals(user.getPass()))
+                    if (profile.getUsername().equals(user.getUsername()) && profile.getPass().equals(user.getPass()))
                     {
                         user.setId(profile.getId());
                     }
