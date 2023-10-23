@@ -3,6 +3,7 @@ package com.example.demo;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpSession;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
@@ -19,6 +20,31 @@ public class SignUpController {
         this.profileRepository = profileRepository;
     }
 
+    @PostMapping("/checkLoggedIn")
+    public String checkLoggedIn(HttpSession session)
+    {
+        String result = "false";
+
+        try {
+            String value = (String) session.getAttribute("Auth");
+            if (value.equals("Allowed"))
+            {
+                result = "true";
+            }
+        }
+        catch (Exception e)
+        {
+            return "false";
+        }
+
+        return result;
+    }
+
+    @PostMapping("/api/logout")
+    public void logout(HttpSession session) {
+        session.invalidate();
+    }
+
     @PostMapping("/modify")
     public HttpStatus modify(@RequestBody Profile changedProfile) {
         // Handle signup logic here
@@ -33,7 +59,7 @@ public class SignUpController {
     }
 
     @PostMapping("/login")
-    public Integer login(@RequestBody Profile user) {
+    public Integer login(@RequestBody Profile user, HttpSession session) {
         // Handle signup logic here
         Integer id = user.getId();
         try {
@@ -53,6 +79,8 @@ public class SignUpController {
         {
             return -1;
         }
+        session.setAttribute("Auth", "Allowed");
+        session.setAttribute("userId", user.getId().toString());
         return user.getId();
     }
 
