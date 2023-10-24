@@ -1,13 +1,18 @@
 package com.example.demo;
 
-import org.springframework.http.HttpStatus;
-import org.springframework.web.bind.annotation.*;
-
-import javax.servlet.http.HttpSession;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
+
+import javax.servlet.http.HttpSession;
+
+import org.springframework.http.HttpStatus;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping("/")
@@ -85,7 +90,7 @@ public class SignUpController {
     }
 
     @PostMapping("/signup")
-    public int signUp(@RequestBody Profile user) {
+    public int signUp(@RequestBody Profile user, HttpSession session) {
         // Handle signup logic here
         Long count = 0L;
         try
@@ -113,6 +118,7 @@ public class SignUpController {
         {
             return 0;
         }
+        session.setAttribute("Auth", "Allowed");
         
         return count.intValue() + 1;
     }
