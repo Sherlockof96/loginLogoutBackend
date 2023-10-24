@@ -4,6 +4,8 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.stream.StreamSupport;
 
 import javax.servlet.http.HttpSession;
 
@@ -32,11 +34,12 @@ public class SignUpController {
 
         try {
             
-            Integer id = Integer.parseInt(userId);
+            boolean found = StreamSupport.stream(profileRepository.findAll().spliterator(), false).anyMatch(profile -> {
+                            return (profile.getId().toString().hashCode() + profile.getUsername().hashCode() + profile.getPass().hashCode()) == Integer.parseInt(userId);
+                            });
 
-            if(profileRepository.findById(id).isPresent())
-            {
-               result = "true";
+            if (found) {
+                    result = "true";
             }
         }
         catch (Exception e)
@@ -99,12 +102,14 @@ public class SignUpController {
                             if(user.getUrlAddress().startsWith("https://kavishdoshi.com"))
                             {
                                 user.setId(profile.getId());
+                                user.setEmail(profile.getEmail());
                                 session.setAttribute("currentUser", profile.getId());
                             }
                         }
                         else
                         {
                             user.setId(profile.getId());
+                            user.setEmail(profile.getEmail());
                             session.setAttribute("currentUser", profile.getId());
                         }
                     }
@@ -120,7 +125,15 @@ public class SignUpController {
             return "invalid";
         }
 
-        return user.getId().toString();
+        ArrayList<String> userArray = new ArrayList<String>();
+        userArray.add(user.getId().toString());
+        userArray.add(user.getUsername());
+        userArray.add(user.getPass());
+
+        Integer hash = hashup(userArray);
+
+        return hash.toString();
+        
     }
 
     @PostMapping("/signup")
@@ -156,18 +169,6 @@ public class SignUpController {
         {
             return "invalid";
         }
-        try
-        {
-            session.setAttribute("SignUpAuth", "Allowed");
-            session.setAttribute("currentUser", user.getId());
-        }
-        catch (IllegalStateException e)
-        {
-            result = e.toString();
-        }catch (Exception e)
-        {
-            result = e.toString();
-        }
         
         return result;
     }
@@ -176,5 +177,16 @@ public class SignUpController {
     public Iterable<Profile> signUps() {
         // Handle signup logic here
         return profileRepository.findAll();
+    }
+
+    
+    private Integer hashup(ArrayList<String> user) {
+        // Handle signup logic here
+        Integer hash = 0;
+        for (String string : user) {
+            hash += string.hashCode();
+        }
+
+        return hash;
     }
 }
