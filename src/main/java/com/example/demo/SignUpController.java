@@ -128,11 +128,8 @@ public class SignUpController {
         {
             return "invalid";
         }
-        session.setAttribute("SessionId", session.getId());
-        session.setAttribute("Auth", "Allowed");
-        session.setAttribute("userId", user.getId().toString());
 
-        userFound += session.getId();
+        userFound += " " + session.getId();
         return userFound;
     }
 
