@@ -129,7 +129,13 @@ public class SignUpController {
             return "invalid";
         }
 
-        userFound += " " + session.getId();
+        try{
+
+            userFound += " " + session.getId();
+        } catch (Exception e)
+        {
+            userFound += " " + e.toString();
+        }
         return userFound;
     }
 
