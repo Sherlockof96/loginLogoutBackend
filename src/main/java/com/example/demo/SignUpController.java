@@ -31,12 +31,9 @@ public class SignUpController {
         String result = "false";
 
         try {
-            String value = (String) session.getAttribute("Auth");
-            if (value.equals("Allowed"))
-            {
-                result = "true";
-            }
+            
             Integer id = Integer.parseInt(userId);
+
             if(profileRepository.findById(id).isPresent())
             {
                result = "true";
