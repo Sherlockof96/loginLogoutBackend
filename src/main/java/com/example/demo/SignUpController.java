@@ -90,7 +90,7 @@ public class SignUpController {
     }
 
     @PostMapping("/signup")
-    public int signUp(@RequestBody Profile user, HttpSession session) {
+    public String signUp(@RequestBody Profile user, HttpSession session) {
         // Handle signup logic here
         Long count = 0L;
         try
@@ -100,7 +100,7 @@ public class SignUpController {
         catch (Exception e)
         {
             e.printStackTrace();
-            return count.intValue();
+            return "invalid";
         }
         
         try {
@@ -116,11 +116,11 @@ public class SignUpController {
                 ps.close();
         }catch (SQLException e)
         {
-            return 0;
+            return "invalid";
         }
         session.setAttribute("Auth", "Allowed");
         
-        return count.intValue() + 1;
+        return session.getId();
     }
 
     @GetMapping("/get")
