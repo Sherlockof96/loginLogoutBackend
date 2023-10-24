@@ -86,20 +86,27 @@ public class SignUpController {
 
     @PostMapping("/login")
     public String login(@RequestBody Profile user, HttpSession session) {
-
-        Profile currentUser = (Profile) session.getAttribute("currentUser");
-        Profile findIfItExists = profileRepository.findUserByCredentials(user.getUsername(), user.getPass());
         String userFound = "NotFound";
+        try
+        {
+            Profile currentUser = (Profile) session.getAttribute("currentUser");
+            Profile findIfItExists = profileRepository.findUserByCredentials(user.getUsername(), user.getPass());
 
-        if (findIfItExists == null)
-        {
-            userFound = "Does not exist";
+            if (findIfItExists == null)
+            {
+                userFound = "Does not exist";
+            }
+            else
+            {
+                userFound = "Exists";
+                session.setAttribute("currentUser", currentUser);
+            }
         }
-        else
+        catch (Exception e)
         {
-            userFound = "Exists";
-            session.setAttribute("currentUser", currentUser);
+            userFound = e.toString();
         }
+        
 
         // Handle signup logic here
         Integer id = user.getId();
