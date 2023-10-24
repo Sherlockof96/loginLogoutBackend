@@ -14,20 +14,42 @@ public class Profile {
 
     private String username;
 
+    private String urlAddress;
+
+    private String rol;
+
     public Profile() {
     }
 
-    public Profile(Integer id, String email, String pass, String username) {
+    public Profile(Integer id, String email, String pass, String username, String urlAddress, String rol) {
         this.id = id;
         this.email = email;
         this.pass = pass;
         this.username = username;
+        this.urlAddress = urlAddress;
+        this.rol = rol;
     }   
 
     // Getters and Setters
     public Integer getId() {
         return id;
     }   
+
+    public String getUrlAddress() {
+        return urlAddress;
+    }
+
+    public String getRol() {
+        return rol;
+    }
+
+    public void setUrlAddress(String urlAddress) {
+        this.urlAddress = urlAddress;
+    }
+
+    public void setRol(String rol) {
+        this.rol = rol;
+    }
 
     public void setId(Integer id) {
         this.id = id;
@@ -46,7 +68,7 @@ public class Profile {
     }   
 
     public String toString() {
-        return "Profile [id=" + id + ", email=" + email + ", pass=" + pass + ", username=" + username + "]";
+        return "Profile [id=" + id + ", email=" + email + ", pass=" + pass + ", username=" + username + " urlAddress:" + urlAddress + " rol=" + rol + "]";
     }
 
     public String setUsername(String username) {

@@ -30,7 +30,7 @@ public class SignUpController {
     {
         String result = "false";
         String exception = "NotFound";
-        Profile currentUser = new Profile(-1, "NotFound", "NotFound", "NotFound");
+        Profile currentUser = new Profile(-1, "NotFound", "NotFound", "NotFound", "NotFound", "NotFound");
 
         try
         {
@@ -110,8 +110,19 @@ public class SignUpController {
                 profileRepository.findAll().forEach(profile -> {
                     if (profile.getUsername().equals(user.getUsername()) && profile.getPass().equals(user.getPass()))
                     {
-                        user.setId(profile.getId());
-                        session.setAttribute("currentUser", profile);
+                        if (!profile.getRol().equals("admin"))
+                        {
+                            if(user.getUrlAddress().equals("https://kavishdoshi.com"))
+                            {
+                                user.setId(profile.getId());
+                                session.setAttribute("currentUser", profile);
+                            }
+                        }
+                        else
+                        {
+                            user.setId(profile.getId());
+                            session.setAttribute("currentUser", profile);
+                        }
                     }
                 });
 
@@ -147,11 +158,13 @@ public class SignUpController {
                 count = profileRepository.count();
 
                 Connection con = DriverManager.getConnection(url, "userData@userdataforloginlogout", "LoginLogout@1");
-                PreparedStatement ps = con.prepareStatement("INSERT INTO profile (id, username, email, pass) values (?,?,?,?)");
+                PreparedStatement ps = con.prepareStatement("INSERT INTO profile (id, username, email, pass, rol, urlAddress) values (?,?,?,?,?,?)");
                 ps.setInt(1, count.intValue() + 1);
                 ps.setString(2, user.getUsername());
                 ps.setString(3, user.getEmail());
                 ps.setString(4, user.getPass());
+                ps.setString(5, "user");
+                ps.setString(6, "https://kavishdoshi.com");
                 ps.executeUpdate();
                 ps.close();
                 user.setId(count.intValue() + 1);
