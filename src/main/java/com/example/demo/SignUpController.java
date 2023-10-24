@@ -34,6 +34,7 @@ public class SignUpController {
         String userId = "NotFound";
         String signUpAuth = "NotFound";
         String exception = "NotFound";
+        Profile currentUser = new Profile(-1, "NotFound", "NotFound", "NotFound");
 
         try
         {
@@ -41,6 +42,7 @@ public class SignUpController {
             sessionId = (String) session.getAttribute("SessionId");
             userId = (String) session.getAttribute("userId");
             signUpAuth = (String) session.getAttribute("SignUpAuth");
+            currentUser = (Profile) session.getAttribute("currentUser");
         }
         catch (Exception e)
         {
@@ -59,7 +61,7 @@ public class SignUpController {
             result = "false";
         }
 
-        result += " Auth " + auth + " SessionId " + sessionId + " userId " + userId + " SignUpAuth " + signUpAuth + " Exception: " + exception;
+        result += " Auth " + auth + " SessionId " + sessionId + " userId " + userId + " SignUpAuth " + signUpAuth + " Current User: " + currentUser.toString() +" Exception: " + exception;
 
         return result;
     }
@@ -84,6 +86,21 @@ public class SignUpController {
 
     @PostMapping("/login")
     public String login(@RequestBody Profile user, HttpSession session) {
+
+        Profile currentUser = (Profile) session.getAttribute("currentUser");
+        Profile findIfItExists = profileRepository.findUserByCredentials(user.getUsername(), user.getPass());
+        String userFound = "NotFound";
+
+        if (findIfItExists == null)
+        {
+            userFound = "Does not exist";
+        }
+        else
+        {
+            userFound = "Exists";
+            session.setAttribute("currentUser", currentUser);
+        }
+
         // Handle signup logic here
         Integer id = user.getId();
         try {
@@ -107,7 +124,8 @@ public class SignUpController {
         session.setAttribute("Auth", "Allowed");
         session.setAttribute("userId", user.getId().toString());
 
-        return session.getId();
+        userFound += session.getId();
+        return userFound;
     }
 
     @PostMapping("/signup")
@@ -140,6 +158,7 @@ public class SignUpController {
             return "invalid";
         }
         session.setAttribute("SignUpAuth", "Allowed");
+        session.setAttribute("currentUser", user);
         
         return session.getId();
     }
