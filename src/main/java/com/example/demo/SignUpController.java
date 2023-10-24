@@ -26,19 +26,9 @@ public class SignUpController {
     }
 
     @PostMapping("/checkLoggedIn")
-    public String checkLoggedIn(HttpSession session)
+    public String checkLoggedIn(@RequestBody String userId, HttpSession session)
     {
         String result = "false";
-        String exception = "NotFound";
-        Integer currentUserId = -1;
-        try
-        {
-            currentUserId = (Integer) session.getAttribute("currentUser");
-        }
-        catch (Exception e)
-        {
-            exception = e.toString();
-        }
 
         try {
             String value = (String) session.getAttribute("Auth");
@@ -46,19 +36,17 @@ public class SignUpController {
             {
                 result = "true";
             }
+            Integer id = Integer.parseInt(userId);
+            if(profileRepository.findById(id).isPresent())
+            {
+               result = "true";
+            }
         }
         catch (Exception e)
         {
             result = "false";
         }
 
-        try
-        { 
-            result += " Current User Id: " + currentUserId.toString() +" Exception: " + exception;
-        } catch (Exception e)
-        {
-            result += " ExceptionOfBuildingString:" + e.toString() + " " +" Exception: " + exception;
-        }
         return result;
     }
 
@@ -135,7 +123,7 @@ public class SignUpController {
             return "invalid";
         }
 
-        return userFound;
+        return user.getId().toString();
     }
 
     @PostMapping("/signup")
