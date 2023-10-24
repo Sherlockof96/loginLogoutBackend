@@ -100,7 +100,7 @@ public class SignUpController {
         }
         catch (Exception e)
         {
-            userFound = e.toString();
+            userFound = "ExceptionOccured";
         }
         
 
@@ -112,7 +112,7 @@ public class SignUpController {
                     {
                         if (!profile.getRol().equals("admin"))
                         {
-                            if(user.getUrlAddress().equals("https://kavishdoshi.com"))
+                            if(user.getUrlAddress().startsWith("https://kavishdoshi.com"))
                             {
                                 user.setId(profile.getId());
                                 session.setAttribute("currentUser", profile);
