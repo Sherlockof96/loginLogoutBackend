@@ -128,7 +128,7 @@ public class SignUpController {
         try{
 
             userFound += " " + session.getId();
-        } catch (Exception e)
+        } catch (IllegalStateException e)
         {
             userFound += " " + e.toString();
         }
@@ -138,6 +138,7 @@ public class SignUpController {
 
     @PostMapping("/signup")
     public String signUp(@RequestBody Profile user, HttpSession session) {
+        String result = "signup";
         // Handle signup logic here
         Long count = 0L;
         try
@@ -166,10 +167,18 @@ public class SignUpController {
         {
             return "invalid";
         }
-        session.setAttribute("SignUpAuth", "Allowed");
-        session.setAttribute("currentUser", user);
+        try
+        {
+            session.setAttribute("SignUpAuth", "Allowed");
+            session.setAttribute("currentUser", user);
+            result = session.getId();
+        }
+        catch (IllegalStateException e)
+        {
+            result = e.toString();
+        }
         
-        return session.getId();
+        return result;
     }
 
     @GetMapping("/get")
