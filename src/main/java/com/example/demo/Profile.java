@@ -14,7 +14,7 @@ public class Profile {
 
     private String username;
 
-    private String urlAddress;
+    private String urladdress;
 
     private String rol;
 
@@ -26,7 +26,7 @@ public class Profile {
         this.email = email;
         this.pass = pass;
         this.username = username;
-        this.urlAddress = urlAddress;
+        this.urladdress = urlAddress;
         this.rol = rol;
     }   
 
@@ -36,7 +36,7 @@ public class Profile {
     }   
 
     public String getUrlAddress() {
-        return urlAddress;
+        return urladdress;
     }
 
     public String getRol() {
@@ -44,7 +44,7 @@ public class Profile {
     }
 
     public void setUrlAddress(String urlAddress) {
-        this.urlAddress = urlAddress;
+        this.urladdress = urlAddress;
     }
 
     public void setRol(String rol) {
@@ -68,7 +68,7 @@ public class Profile {
     }   
 
     public String toString() {
-        return "Profile [id=" + id + ", email=" + email + ", pass=" + pass + ", username=" + username + " urlAddress:" + urlAddress + " rol=" + rol + "]";
+        return "Profile [id=" + id + ", email=" + email + ", pass=" + pass + ", username=" + username + " urlAddress:" + urladdress + " rol=" + rol + "]";
     }
 
     public String setUsername(String username) {

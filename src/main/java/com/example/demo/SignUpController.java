@@ -30,11 +30,10 @@ public class SignUpController {
     {
         String result = "false";
         String exception = "NotFound";
-        Profile currentUser = new Profile(-1, "NotFound", "NotFound", "NotFound", "NotFound", "NotFound");
-
+        Integer currentUserId = -1;
         try
         {
-            currentUser = (Profile) session.getAttribute("currentUser");
+            currentUserId = (Integer) session.getAttribute("currentUser");
         }
         catch (Exception e)
         {
@@ -55,7 +54,7 @@ public class SignUpController {
 
         try
         { 
-            result += " Current User: " + currentUser.getUsername() +" Exception: " + exception;
+            result += " Current User Id: " + currentUserId.toString() +" Exception: " + exception;
         } catch (Exception e)
         {
             result += " ExceptionOfBuildingString:" + e.toString() + " " +" Exception: " + exception;
@@ -86,16 +85,16 @@ public class SignUpController {
         String userFound = "NotFound";
         try
         {
-            Profile currentUser = (Profile) session.getAttribute("currentUser");
+            Integer currentUserId = (Integer) session.getAttribute("currentUser");
         
-            if (currentUser == null)
+            if (currentUserId == null)
             {
                 userFound = "Does not exist";
             }
             else
             {
                 userFound = "Exists";
-                session.setAttribute("currentUser", currentUser);
+                session.setAttribute("currentUser", currentUserId);
             }
         }
         catch (Exception e)
@@ -115,13 +114,13 @@ public class SignUpController {
                             if(user.getUrlAddress().startsWith("https://kavishdoshi.com"))
                             {
                                 user.setId(profile.getId());
-                                session.setAttribute("currentUser", profile);
+                                session.setAttribute("currentUser", profile.getId());
                             }
                         }
                         else
                         {
                             user.setId(profile.getId());
-                            session.setAttribute("currentUser", profile);
+                            session.setAttribute("currentUser", profile.getId());
                         }
                     }
                 });
@@ -175,7 +174,7 @@ public class SignUpController {
         try
         {
             session.setAttribute("SignUpAuth", "Allowed");
-            session.setAttribute("currentUser", user);
+            session.setAttribute("currentUser", user.getId());
         }
         catch (IllegalStateException e)
         {
