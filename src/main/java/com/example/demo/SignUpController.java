@@ -29,6 +29,23 @@ public class SignUpController {
     public String checkLoggedIn(HttpSession session)
     {
         String result = "false";
+        String auth = "NotFound";
+        String sessionId = "NotFound";
+        String userId = "NotFound";
+        String signUpAuth = "NotFound";
+        String exception = "NotFound";
+
+        try
+        {
+            auth = (String) session.getAttribute("Auth");
+            sessionId = (String) session.getAttribute("SessionId");
+            userId = (String) session.getAttribute("userId");
+            signUpAuth = (String) session.getAttribute("SignUpAuth");
+        }
+        catch (Exception e)
+        {
+            exception = e.toString();
+        }
 
         try {
             String value = (String) session.getAttribute("Auth");
@@ -39,8 +56,10 @@ public class SignUpController {
         }
         catch (Exception e)
         {
-            return "false";
+            result = "false";
         }
+
+        result += " Auth " + auth + " SessionId " + sessionId + " userId " + userId + " SignUpAuth " + signUpAuth + " Exception: " + exception;
 
         return result;
     }
@@ -64,7 +83,7 @@ public class SignUpController {
     }
 
     @PostMapping("/login")
-    public Integer login(@RequestBody Profile user, HttpSession session) {
+    public String login(@RequestBody Profile user, HttpSession session) {
         // Handle signup logic here
         Integer id = user.getId();
         try {
@@ -77,16 +96,18 @@ public class SignUpController {
 
         }catch (Exception e)
         {
-            return 0;
+            return "invalid";
         }
         
         if (user.getId() == id)
         {
-            return -1;
+            return "invalid";
         }
+        session.setAttribute("SessionId", session.getId());
         session.setAttribute("Auth", "Allowed");
         session.setAttribute("userId", user.getId().toString());
-        return user.getId();
+
+        return session.getId();
     }
 
     @PostMapping("/signup")
@@ -118,7 +139,7 @@ public class SignUpController {
         {
             return "invalid";
         }
-        session.setAttribute("Auth", "Allowed");
+        session.setAttribute("SignUpAuth", "Allowed");
         
         return session.getId();
     }
