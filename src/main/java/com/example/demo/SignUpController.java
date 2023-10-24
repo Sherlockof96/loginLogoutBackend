@@ -53,8 +53,6 @@ public class SignUpController {
             result = "false";
         }
 
-        // result += " Auth " + auth + " SessionId " + sessionId + " userId " + userId + " SignUpAuth " + signUpAuth + " Current User: " + currentUser.toString() +" Exception: " + exception;
-        
         try
         { 
             result += " Current User: " + currentUser.getUsername() +" Exception: " + exception;
@@ -89,8 +87,7 @@ public class SignUpController {
         try
         {
             Profile currentUser = (Profile) session.getAttribute("currentUser");
-            // Profile findIfItExists = profileRepository.findUserByCredentials(user.getUsername(), user.getPass());
-
+        
             if (currentUser == null)
             {
                 userFound = "Does not exist";
