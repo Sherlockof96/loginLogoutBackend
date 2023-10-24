@@ -115,7 +115,7 @@ public class SignUpController {
                     if (profile.getUsername().equals(user.getUsername()) && profile.getPass().equals(user.getPass()))
                     {
                         user.setId(profile.getId());
-                        session.setAttribute("currentUser", user);
+                        session.setAttribute("currentUser", profile);
                     }
                 });
 
