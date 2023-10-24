@@ -29,19 +29,11 @@ public class SignUpController {
     public String checkLoggedIn(HttpSession session)
     {
         String result = "false";
-        // String auth = "NotFound";
-        // String sessionId = "NotFound";
-        // String userId = "NotFound";
-        // String signUpAuth = "NotFound";
         String exception = "NotFound";
         Profile currentUser = new Profile(-1, "NotFound", "NotFound", "NotFound");
 
         try
         {
-            // auth = (String) session.getAttribute("Auth");
-            // sessionId = (String) session.getAttribute("SessionId");
-            // userId = (String) session.getAttribute("userId");
-            // signUpAuth = (String) session.getAttribute("SignUpAuth");
             currentUser = (Profile) session.getAttribute("currentUser");
         }
         catch (Exception e)
@@ -62,7 +54,14 @@ public class SignUpController {
         }
 
         // result += " Auth " + auth + " SessionId " + sessionId + " userId " + userId + " SignUpAuth " + signUpAuth + " Current User: " + currentUser.toString() +" Exception: " + exception;
-        result += " Current User: " + currentUser.toString() +" Exception: " + exception;
+        
+        try
+        { 
+            result += " Current User: " + currentUser.getUsername() +" Exception: " + exception;
+        } catch (Exception e)
+        {
+            result += " ExceptionOfBuildingString:" + e.toString() + " " +" Exception: " + exception;
+        }
         return result;
     }
 
@@ -136,6 +135,7 @@ public class SignUpController {
         {
             userFound += " " + e.toString();
         }
+
         return userFound;
     }
 
