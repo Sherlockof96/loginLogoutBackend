@@ -90,9 +90,9 @@ public class SignUpController {
         try
         {
             Profile currentUser = (Profile) session.getAttribute("currentUser");
-            Profile findIfItExists = profileRepository.findUserByCredentials(user.getUsername(), user.getPass());
+            // Profile findIfItExists = profileRepository.findUserByCredentials(user.getUsername(), user.getPass());
 
-            if (findIfItExists == null)
+            if (currentUser == null)
             {
                 userFound = "Does not exist";
             }
