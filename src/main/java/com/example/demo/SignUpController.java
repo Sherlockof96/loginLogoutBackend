@@ -125,14 +125,6 @@ public class SignUpController {
             return "invalid";
         }
 
-        try{
-
-            userFound += " " + session.getId();
-        } catch (IllegalStateException e)
-        {
-            userFound += " " + e.toString();
-        }
-
         return userFound;
     }
 
@@ -171,9 +163,11 @@ public class SignUpController {
         {
             session.setAttribute("SignUpAuth", "Allowed");
             session.setAttribute("currentUser", user);
-            result = session.getId();
         }
         catch (IllegalStateException e)
+        {
+            result = e.toString();
+        }catch (Exception e)
         {
             result = e.toString();
         }
