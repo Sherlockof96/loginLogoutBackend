@@ -165,6 +165,7 @@ public class SignUpController {
                 ps.executeUpdate();
                 ps.close();
                 user.setId(count.intValue() + 1);
+                con.close();
         }catch (SQLException e)
         {
             return "invalid";
