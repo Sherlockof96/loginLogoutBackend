@@ -156,10 +156,10 @@ public class NotesController {
         return count;
     }
 
-    private void insertQuery(Connection con, Notes notes, Integer count) throws SQLException {
+    private void insertQuery(Connection con, Notes notes, Integer hash) throws SQLException {
         String sql = "INSERT INTO  notes (id, note, colour, userhash, date) VALUES (?, ?, ?, ?, ?)";
         PreparedStatement statement = con.prepareStatement(sql);
-        statement.setInt(1, count + 1);
+        statement.setInt(1, hash);
         statement.setString(2, notes.getNote());
         statement.setString(3, notes.getColour());
         statement.setString(4, notes.getUserhash());
