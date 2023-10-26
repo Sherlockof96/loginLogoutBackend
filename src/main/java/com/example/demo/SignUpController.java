@@ -5,7 +5,6 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.stream.StreamSupport;
 
 import javax.servlet.http.HttpSession;
 
@@ -33,16 +32,9 @@ public class SignUpController {
         String result = "false";
 
         try {
-            
-            boolean found = StreamSupport.stream(profileRepository.findAll().spliterator(), false).anyMatch(profile -> {
-                            return (profile.getId().toString().hashCode() + profile.getUsername().hashCode() + profile.getPass().hashCode()) == Integer.parseInt(userId);
-                            });
-
-            String roleString = profileRepository.findById(Integer.parseInt(userId)).get().getRol();
-            
-
+            boolean found = profileRepository.findById(Integer.parseInt(userId)).isPresent();
             if (found) {
-                    result = roleString;
+                    result = profileRepository.findById(Integer.parseInt(userId)).get().getRol();
             }
         }
         catch (Exception e)
@@ -73,29 +65,9 @@ public class SignUpController {
 
     @PostMapping("/login")
     public String login(@RequestBody Profile user, HttpSession session) {
-        String userFound = "NotFound";
-        try
-        {
-            Integer currentUserId = (Integer) session.getAttribute("currentUser");
-        
-            if (currentUserId == null)
-            {
-                userFound = "Does not exist";
-            }
-            else
-            {
-                userFound = "Exists";
-                session.setAttribute("currentUser", currentUserId);
-            }
-        }
-        catch (Exception e)
-        {
-            userFound = "ExceptionOccured";
-        }
-        
 
         // Handle signup logic here
-        Integer id = user.getId();
+        Integer id = user.getUserhash();
         try {
                 profileRepository.findAll().forEach(profile -> {
                     if (profile.getUsername().equals(user.getUsername()) && profile.getPass().equals(user.getPass()))
@@ -104,16 +76,16 @@ public class SignUpController {
                         {
                             if(user.getUrlAddress().startsWith("https://kavishdoshi.com"))
                             {
-                                user.setId(profile.getId());
+                                user.setUserhash(profile.getUserhash());
                                 user.setEmail(profile.getEmail());
-                                session.setAttribute("currentUser", profile.getId());
+                                session.setAttribute("currentUser", profile.getUserhash());
                             }
                         }
                         else
                         {
-                            user.setId(profile.getId());
+                            user.setUserhash(profile.getUserhash());
                             user.setEmail(profile.getEmail());
-                            session.setAttribute("currentUser", profile.getId());
+                            session.setAttribute("currentUser", profile.getUserhash());
                         }
                     }
                 });
@@ -123,19 +95,12 @@ public class SignUpController {
             return "invalid";
         }
         
-        if (user.getId() == id)
+        if (user.getUserhash() == id)
         {
             return "invalid";
         }
 
-        ArrayList<String> userArray = new ArrayList<String>();
-        userArray.add(user.getId().toString());
-        userArray.add(user.getUsername());
-        userArray.add(user.getPass());
-
-        Integer hash = hashup(userArray);
-
-        return hash.toString();
+        return user.getUserhash().toString();
         
     }
 
@@ -143,7 +108,6 @@ public class SignUpController {
     public String signUp(@RequestBody Profile user, HttpSession session) {
         String result = "signup";
         // Handle signup logic here
-        Long count = 0L;
         try
         {
             Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver");
@@ -155,19 +119,35 @@ public class SignUpController {
         }
         
         try {
-                count = profileRepository.count();
+                ArrayList<String> userArray = new ArrayList<String>();
+                userArray.add(user.getUsername());
+                userArray.add(user.getEmail());
+                userArray.add(user.getPass());
+                Integer hash = hashup(userArray);
+                Boolean temp = false;
+                do{
+                    if(profileRepository.findById(hash).isPresent())
+                    {
+                        hash++;
+                    }
+                    else
+                    {
+                        temp = true;
+                    }
+
+                }while (temp != true);
+                
 
                 Connection con = DriverManager.getConnection(url, "userData@userdataforloginlogout", "LoginLogout@1");
-                PreparedStatement ps = con.prepareStatement("INSERT INTO profile (id, username, email, pass, rol, urlAddress) values (?,?,?,?,?,?)");
-                ps.setInt(1, count.intValue() + 1);
+                PreparedStatement ps = con.prepareStatement("INSERT INTO profile (userhash, username, email, pass, rol, urlAddress) values (?,?,?,?,?,?)");
+                ps.setInt(1, hash);
                 ps.setString(2, user.getUsername());
                 ps.setString(3, user.getEmail());
                 ps.setString(4, user.getPass());
-                ps.setString(5, "user");
-                ps.setString(6, "https://kavishdoshi.com");
+                ps.setString(5, user.getRol()!=null ? user.getRol():"user");
+                ps.setString(6, user.getUrlAddress()!=null? user.getUrlAddress():"https://kavishdoshi.com");
                 ps.executeUpdate();
                 ps.close();
-                user.setId(count.intValue() + 1);
                 con.close();
         }catch (SQLException e)
         {

@@ -6,7 +6,7 @@ import org.springframework.data.annotation.Id;
 
 public class Profile {
     @Id
-    private Integer id;
+    private Integer userhash;
 
     private String email;
 
@@ -21,8 +21,8 @@ public class Profile {
     public Profile() {
     }
 
-    public Profile(Integer id, String email, String pass, String username, String urlAddress, String rol) {
-        this.id = id;
+    public Profile(Integer userhash, String email, String pass, String username, String urlAddress, String rol) {
+        this.userhash = userhash;
         this.email = email;
         this.pass = pass;
         this.username = username;
@@ -31,8 +31,8 @@ public class Profile {
     }   
 
     // Getters and Setters
-    public Integer getId() {
-        return id;
+    public Integer getUserhash() {
+        return userhash;
     }   
 
     public String getUrlAddress() {
@@ -51,8 +51,8 @@ public class Profile {
         this.rol = rol;
     }
 
-    public void setId(Integer id) {
-        this.id = id;
+    public void setUserhash(Integer userhash) {
+        this.userhash = userhash;
     }   
 
     public String getEmail() {
@@ -68,7 +68,7 @@ public class Profile {
     }   
 
     public String toString() {
-        return "Profile [id=" + id + ", email=" + email + ", pass=" + pass + ", username=" + username + " urlAddress:" + urladdress + " rol=" + rol + "]";
+        return "Profile [userhash=" + userhash + ", email=" + email + ", pass=" + pass + ", username=" + username + " urlAddress:" + urladdress + " rol=" + rol + "]";
     }
 
     public String setUsername(String username) {
