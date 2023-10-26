@@ -5,6 +5,8 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 
 import javax.servlet.http.HttpSession;
@@ -73,6 +75,7 @@ public class NotesController {
     public String updateNotes(@RequestBody Notes note, HttpSession session)
     {
         try {
+                note.setDate(getDateInString());
                 notesRepository.save(note);
         }catch (Exception e)
         {
@@ -87,7 +90,7 @@ public class NotesController {
         try{
             ArrayList<String> newNoteArray = new ArrayList<String>();
             newNoteArray.add(newNotes.getNote());
-            newNoteArray.add(newNotes.getDate());
+            newNotes.setDate(getDateInString());
             newNoteArray.add(newNotes.getUserhash());
             Integer hash = hashup(newNoteArray);
             Boolean temp = false;
@@ -191,5 +194,12 @@ public class NotesController {
         }
 
         return hash;
+    }
+
+    private String getDateInString()
+    {
+        DateTimeFormatter dtf = DateTimeFormatter.ofPattern("MM/dd/yyyy");  
+        LocalDateTime now = LocalDateTime.now(); 
+        return dtf.format(now);
     }
 }
