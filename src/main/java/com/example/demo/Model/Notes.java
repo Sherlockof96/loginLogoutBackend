@@ -13,14 +13,17 @@ public class Notes {
 
     private String colour;
 
+    private String date;
+
     public Notes() {
     }
 
-    public Notes(Integer id, String note, String colour, String userhash) {
+    public Notes(Integer id, String note, String colour, String userhash, String date) {
         this.id = id;
         this.note = note;
         this.colour = colour;
         this.userhash = userhash;
+        this.date = date;
     }
 
     // Getters and Setters
@@ -34,6 +37,10 @@ public class Notes {
 
     public String getColour() {
         return colour;
+    }
+
+    public String getDate() {
+        return date;
     }
 
     public String getUserhash() {
@@ -52,12 +59,16 @@ public class Notes {
         this.colour = colour;
     }
 
+    public void setDate(String date) {
+        this.date = date;
+    }
+
     public void setUserhash(String userhash) {
         this.userhash = userhash;
     }
 
     public String toString() {
-        return "Notes [id=" + id + " userhash=" + userhash +", note=" + note + ", colour=" + colour + "]";
+        return "Notes [id=" + id + " userhash=" + userhash +", note=" + note + ", colour=" + colour + ", date=" + date + "]";
     }
 
     

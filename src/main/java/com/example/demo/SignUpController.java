@@ -38,8 +38,11 @@ public class SignUpController {
                             return (profile.getId().toString().hashCode() + profile.getUsername().hashCode() + profile.getPass().hashCode()) == Integer.parseInt(userId);
                             });
 
+            String roleString = profileRepository.findById(Integer.parseInt(userId)).get().getRol();
+            
+
             if (found) {
-                    result = "true";
+                    result = roleString;
             }
         }
         catch (Exception e)

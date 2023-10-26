@@ -87,7 +87,6 @@ public class NotesController {
             Integer count = totalRowsQuery(getConnection(), newNotes);
             if(userNotesMapRepository.findById(newNotes.getUserhash()).isEmpty())
             {
-                System.out.println("UserNotesMap not exists");
                 JSONObject nodeIds = new JSONObject();
                 Usernotesmapping userNotesMap = new Usernotesmapping(newNotes.getUserhash(), nodeIds.toString());
                 String tempIds = userNotesMap.addNoteId(userNotesMap.getNoteids(), count + 1);
@@ -95,16 +94,13 @@ public class NotesController {
                 insertQueryOfUserNoteMapping(getConnection(), userNotesMap);
             }
             else{
-                System.out.println("UserNotesMap already exists");
                 Usernotesmapping userNotesMap = userNotesMapRepository.findById(newNotes.getUserhash()).get();
                 String tempIds = userNotesMap.addNoteId(userNotesMap.getNoteids(), count + 1);
                 userNotesMap.setNoteids(tempIds);
                 userNotesMapRepository.save(userNotesMap);
-            }
-            System.out.println("Saved new UserNotesMap");   
+            }  
             Connection con = getConnection();
             insertQuery(con, newNotes, count);
-            System.out.println("Saved new note");
             
         } 
         catch (Exception e) {
@@ -143,12 +139,13 @@ public class NotesController {
     }
 
     private void insertQuery(Connection con, Notes notes, Integer count) throws SQLException {
-        String sql = "INSERT INTO  notes (id, note, colour, userhash) VALUES (?, ?, ?, ?)";
+        String sql = "INSERT INTO  notes (id, note, colour, userhash, date) VALUES (?, ?, ?, ?, ?)";
         PreparedStatement statement = con.prepareStatement(sql);
         statement.setInt(1, count + 1);
         statement.setString(2, notes.getNote());
         statement.setString(3, notes.getColour());
         statement.setString(4, notes.getUserhash());
+        statement.setString(5, notes.getDate());
         statement.executeUpdate();
         statement.close();
     }
