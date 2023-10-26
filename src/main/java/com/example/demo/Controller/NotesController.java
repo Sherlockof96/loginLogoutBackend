@@ -61,6 +61,7 @@ public class NotesController {
                 String tempIds = usermap.deleteNoteId(usermap.getNoteids(), note.getId());
                 usermap.setNoteids(tempIds);
                 userNotesMapRepository.save(usermap);
+                notesRepository.deleteById(note.getId());
         }catch (Exception e)
         {
             return e.toString();
@@ -84,23 +85,40 @@ public class NotesController {
     public String addNotes(@RequestBody Notes newNotes, HttpSession session) {
 
         try{
-            Integer count = totalRowsQuery(getConnection(), newNotes);
+            ArrayList<String> newNoteArray = new ArrayList<String>();
+            newNoteArray.add(newNotes.getNote());
+            newNoteArray.add(newNotes.getDate());
+            newNoteArray.add(newNotes.getUserhash());
+            Integer hash = hashup(newNoteArray);
+            Boolean temp = false;
+            do{
+                if(profileRepository.findById(hash).isPresent())
+                {
+                    hash++;
+                }
+                else
+                {
+                    temp = true;
+                }
+
+            }while (temp != true);
+            
             if(userNotesMapRepository.findById(newNotes.getUserhash()).isEmpty())
             {
                 JSONObject nodeIds = new JSONObject();
                 Usernotesmapping userNotesMap = new Usernotesmapping(newNotes.getUserhash(), nodeIds.toString());
-                String tempIds = userNotesMap.addNoteId(userNotesMap.getNoteids(), count + 1);
+                String tempIds = userNotesMap.addNoteId(userNotesMap.getNoteids(), hash);
                 userNotesMap.setNoteids(tempIds);
                 insertQueryOfUserNoteMapping(getConnection(), userNotesMap);
             }
             else{
                 Usernotesmapping userNotesMap = userNotesMapRepository.findById(newNotes.getUserhash()).get();
-                String tempIds = userNotesMap.addNoteId(userNotesMap.getNoteids(), count + 1);
+                String tempIds = userNotesMap.addNoteId(userNotesMap.getNoteids(), hash);
                 userNotesMap.setNoteids(tempIds);
                 userNotesMapRepository.save(userNotesMap);
             }  
             Connection con = getConnection();
-            insertQuery(con, newNotes, count);
+            insertQuery(con, newNotes, hash);
             
         } 
         catch (Exception e) {
@@ -164,5 +182,14 @@ public class NotesController {
         PreparedStatement statement = con.prepareStatement(sql);
         statement.executeUpdate();
         statement.close();
+    }
+
+    private Integer hashup(ArrayList<String> user) {
+        Integer hash = 0;
+        for (String string : user) {
+            hash += string.hashCode();
+        }
+
+        return hash;
     }
 }
